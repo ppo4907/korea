@@ -1,11 +1,198 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>관리자 페이지</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>관리자 페이지 - KOREA PARTNERS</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 2rem;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    label, input, select {
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+    input[type="text"], input[type="password"], select {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #2b3a50;
+      color: white;
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2rem;
+    }
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 0.75rem;
+      text-align: center;
+    }
+    .delete-btn {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <h2>관리자 로그인</h2>
-  <p>비밀번호를 입력해주세요. (초기값: 123456)</p>
+  <div class="container" id="loginContainer">
+    <h2>관리자 로그인</h2>
+    <label for="passwordInput">비밀번호</label>
+    <input type="password" id="passwordInput">
+    <button onclick="checkPassword()">로그인</button>
+  </div>
+
+  <div class="container" id="adminContainer" style="display:none;">
+    <h2>법인 등록 관리자</h2>
+
+    <form id="addForm">
+      <label>법인명</label>
+      <input type="text" id="corpName" required>
+
+      <label>업종</label>
+      <input type="text" id="businessType" required>
+
+      <label>설립연도</label>
+      <input type="text" id="established" required>
+
+      <label>자본금</label>
+      <input type="text" id="capital" required>
+
+      <label>상태</label>
+      <select id="status" required>
+        <option value="정상">정상</option>
+        <option value="휴업">휴업</option>
+        <option value="청산">청산</option>
+      </select>
+
+      <button type="submit">등록하기</button>
+    </form>
+
+    <h3>비밀번호 변경</h3>
+    <label>기존 비밀번호</label>
+    <input type="password" id="oldPassword">
+    <label>새 비밀번호</label>
+    <input type="password" id="newPassword">
+    <button onclick="changePassword()">비밀번호 변경</button>
+
+    <table id="corpTable">
+      <thead>
+        <tr>
+          <th>법인명</th>
+          <th>업종</th>
+          <th>설립연도</th>
+          <th>자본금</th>
+          <th>상태</th>
+          <th>삭제</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 동적 데이터 추가 영역 -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const form = document.getElementById('addForm');
+    const tableBody = document.querySelector('#corpTable tbody');
+    const loginContainer = document.getElementById('loginContainer');
+    const adminContainer = document.getElementById('adminContainer');
+
+    function getStoredPassword() {
+      return localStorage.getItem('adminPassword') || '123456';
+    }
+
+    function checkPassword() {
+      const input = document.getElementById('passwordInput').value;
+      if (input === getStoredPassword()) {
+        loginContainer.style.display = 'none';
+        adminContainer.style.display = 'block';
+        renderTable();
+      } else {
+        alert('비밀번호가 틀렸습니다.');
+      }
+    }
+
+    function changePassword() {
+      const oldPass = document.getElementById('oldPassword').value;
+      const newPass = document.getElementById('newPassword').value;
+      if (oldPass === getStoredPassword()) {
+        localStorage.setItem('adminPassword', newPass);
+        alert('비밀번호가 변경되었습니다.');
+        document.getElementById('oldPassword').value = '';
+        document.getElementById('newPassword').value = '';
+      } else {
+        alert('기존 비밀번호가 맞지 않습니다.');
+      }
+    }
+
+    function renderTable() {
+      tableBody.innerHTML = '';
+      const corpList = JSON.parse(localStorage.getItem('corps') || '[]');
+      corpList.forEach((corp, index) => {
+        const row = `<tr>
+          <td>${corp.name}</td>
+          <td>${corp.type}</td>
+          <td>${corp.year}</td>
+          <td>${corp.capital}</td>
+          <td>${corp.status}</td>
+          <td><button class="delete-btn" onclick="deleteCorp(${index})">삭제</button></td>
+        </tr>`;
+        tableBody.innerHTML += row;
+      });
+    }
+
+    function deleteCorp(index) {
+      const corpList = JSON.parse(localStorage.getItem('corps') || '[]');
+      corpList.splice(index, 1);
+      localStorage.setItem('corps', JSON.stringify(corpList));
+      renderTable();
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const newCorp = {
+        name: document.getElementById('corpName').value,
+        type: document.getElementById('businessType').value,
+        year: document.getElementById('established').value,
+        capital: document.getElementById('capital').value,
+        status: document.getElementById('status').value
+      };
+      const corpList = JSON.parse(localStorage.getItem('corps') || '[]');
+      corpList.push(newCorp);
+      localStorage.setItem('corps', JSON.stringify(corpList));
+      form.reset();
+      renderTable();
+    });
+  </script>
 </body>
 </html>
