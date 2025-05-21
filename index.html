@@ -88,6 +88,26 @@
       line-height: 1.8;
       padding: 0 1rem;
     }
+    .contact-info {
+      margin-top: 2rem;
+      text-align: center;
+    }
+    .contact-info input {
+      margin: 0.3rem;
+      padding: 0.5rem;
+      width: 80%;
+      max-width: 400px;
+    }
+    .contact-info button {
+      margin-top: 1rem;
+      padding: 0.5rem 1.5rem;
+      font-size: 1rem;
+      background-color: #00509e;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -143,26 +163,19 @@
       KOREA PARTNERS는 언제나 고객과의 소통을 가장 중요하게 생각합니다.<br>
       법인 거래와 관련된 모든 문의사항은 아래의 채널을 통해 빠르고 친절하게 안내받으실 수 있습니다.<br>
       고객센터 운영팀은 법인 매입, 매도, 법인설립, 절차 안내, 비용문의 등 다양한 질문에 대해 신속하게 대응하고 있으며,<br>
-      사전 예약 시 방문 상담 또는 Zoom을 통한 비대면 미팅도 제공하고 있습니다.<br><br>
-      📩 이메일 문의: <a class="link" href="mailto:info@koreapartners.co.kr">info@koreapartners.co.kr</a><br>
-      💬 텔레그램 문의: <a class="link" href="https://t.me/don8572" target="_blank">@don8572</a><br>
-      📞 전화 상담(예약 전용): 02-1234-5678<br><br>
-      ✅ 운영 시간:<br>
-      - 평일 오전 9시 ~ 오후 6시<br>
-      - 토요일 오전 10시 ~ 오후 1시 (예약 시에 한함)<br>
-      - 공휴일 및 일요일 휴무<br><br>
-      ⛳ 주요 상담 분야:<br>
-      - 휴면 법인 양도/매입<br>
-      - 신규 설립 법인 판매<br>
-      - 세무·법무 컨설팅 연계<br>
-      - 사업 목적별 맞춤 법인 제공<br>
-      언제든 편하게 연락 주세요. 고객님의 성공적인 비즈니스를 위해 최선을 다하겠습니다.
+      사전 예약 시 방문 상담 또는 Zoom을 통한 비대면 미팅도 제공하고 있습니다.
     </p>
+    <div class="contact-info">
+      <label>이메일 문의: <input type="text" id="emailInput" /></label><br>
+      <label>텔레그램 문의: <input type="text" id="telegramInput" /></label><br>
+      <label>전화 상담(예약 전용): <input type="text" id="phoneInput" /></label><br>
+      <button onclick="saveContactInfo()">저장하기</button>
+    </div>
   </section>
 </main>
 
 <footer>
-  © 2025 KOREA PARTNERS | 고객센터: info@koreapartners.co.kr | 텔레그램: @don8572
+  © 2025 KOREA PARTNERS | 고객센터: <span id="footerEmail"></span> | 텔레그램: <span id="footerTelegram"></span>
 </footer>
 
 <script>
@@ -187,6 +200,23 @@
     });
   }
 
+  function saveContactInfo() {
+    const email = document.getElementById('emailInput').value;
+    const telegram = document.getElementById('telegramInput').value;
+    const phone = document.getElementById('phoneInput').value;
+    localStorage.setItem('contactEmail', email);
+    localStorage.setItem('contactTelegram', telegram);
+    localStorage.setItem('contactPhone', phone);
+    renderFooterContact();
+    alert("저장되었습니다!");
+  }
+
+  function renderFooterContact() {
+    document.getElementById('footerEmail').textContent = localStorage.getItem('contactEmail') || 'info@koreapartners.co.kr';
+    document.getElementById('footerTelegram').textContent = localStorage.getItem('contactTelegram') || '@don8572';
+  }
+
+  renderFooterContact();
   renderCorps();
 </script>
 
