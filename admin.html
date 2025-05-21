@@ -1,60 +1,87 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>관리자 페이지 - KOREA PARTNERS</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f4f4;
       margin: 0;
-      padding: 2rem;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f7fa;
       color: #333;
+    }
+    header {
+      background-color: #003366;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+    .tabs {
+      text-align: center;
+      background: #e0e0e0;
+      padding: 0.5rem;
+    }
+    .tabs button {
+      margin: 0 1rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      background-color: #003366;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .tabs button:hover {
+      background-color: #00509e;
     }
     .container {
       max-width: 800px;
-      margin: auto;
+      margin: 2rem auto;
       background: white;
       padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
     h2 {
       text-align: center;
     }
-    label, input, select {
-      display: block;
+    input {
       width: 100%;
-      margin-bottom: 1rem;
-    }
-    input[type="text"], input[type="password"], select {
-      padding: 0.5rem;
+      padding: 0.6rem;
+      margin: 0.5rem 0;
       border: 1px solid #ccc;
       border-radius: 4px;
     }
-    button {
-      background-color: #2b3a50;
+    button.action {
+      background-color: #003366;
       color: white;
-      padding: 0.7rem 1.5rem;
+      padding: 0.6rem 1rem;
       border: none;
+      margin-top: 1rem;
       border-radius: 4px;
       cursor: pointer;
-      margin-top: 0.5rem;
+    }
+    button.action:hover {
+      background-color: #00509e;
     }
     table {
       width: 100%;
+      margin-top: 1rem;
       border-collapse: collapse;
-      margin-top: 2rem;
     }
-    table th, table td {
-      border: 1px solid #ddd;
-      padding: 0.75rem;
+    th, td {
+      padding: 0.8rem;
+      border: 1px solid #ccc;
       text-align: center;
     }
-    .delete-btn {
-      background-color: #e74c3c;
+    th {
+      background-color: #f0f0f0;
+    }
+    .hidden {
+      display: none;
+    }
+    .danger {
+      background-color: #d33;
       color: white;
       border: none;
       padding: 0.4rem 0.8rem;
@@ -64,135 +91,124 @@
   </style>
 </head>
 <body>
-  <div class="container" id="loginContainer">
-    <h2>관리자 로그인</h2>
-    <label for="passwordInput">비밀번호</label>
-    <input type="password" id="passwordInput">
-    <button onclick="checkPassword()">로그인</button>
+
+<header>
+  <h1>KOREA PARTNERS 관리자</h1>
+</header>
+
+<div class="container" id="loginBox">
+  <h2>관리자 로그인</h2>
+  <input type="password" id="loginPw" placeholder="비밀번호 입력" />
+  <button class="action" onclick="login()">로그인</button>
+</div>
+
+<div class="container hidden" id="adminBox">
+  <div class="tabs">
+    <button onclick="showTab('reg')">법인 등록</button>
+    <button onclick="showTab('list')">등록 현황</button>
+    <button onclick="showTab('pw')">비밀번호 변경</button>
   </div>
 
-  <div class="container" id="adminContainer" style="display:none;">
-    <h2>법인 등록 관리자</h2>
+  <div id="reg" class="tab-content">
+    <h2>법인 등록</h2>
+    <input type="text" id="name" placeholder="법인명" />
+    <input type="text" id="type" placeholder="업종" />
+    <input type="text" id="year" placeholder="설립연도" />
+    <input type="text" id="capital" placeholder="자본금" />
+    <input type="text" id="status" placeholder="상태" />
+    <button class="action" onclick="registerCorp()">등록하기</button>
+  </div>
 
-    <form id="addForm">
-      <label>법인명</label>
-      <input type="text" id="corpName" required>
-
-      <label>업종</label>
-      <input type="text" id="businessType" required>
-
-      <label>설립연도</label>
-      <input type="text" id="established" required>
-
-      <label>자본금</label>
-      <input type="text" id="capital" required>
-
-      <label>상태</label>
-      <select id="status" required>
-        <option value="정상">정상</option>
-        <option value="휴업">휴업</option>
-        <option value="청산">청산</option>
-      </select>
-
-      <button type="submit">등록하기</button>
-    </form>
-
-    <h3>비밀번호 변경</h3>
-    <label>기존 비밀번호</label>
-    <input type="password" id="oldPassword">
-    <label>새 비밀번호</label>
-    <input type="password" id="newPassword">
-    <button onclick="changePassword()">비밀번호 변경</button>
-
-    <table id="corpTable">
+  <div id="list" class="tab-content hidden">
+    <h2>등록된 법인 목록</h2>
+    <table>
       <thead>
-        <tr>
-          <th>법인명</th>
-          <th>업종</th>
-          <th>설립연도</th>
-          <th>자본금</th>
-          <th>상태</th>
-          <th>삭제</th>
-        </tr>
+        <tr><th>법인명</th><th>업종</th><th>설립연도</th><th>자본금</th><th>상태</th><th>삭제</th></tr>
       </thead>
-      <tbody>
-        <!-- 동적 데이터 추가 영역 -->
-      </tbody>
+      <tbody id="corpList"></tbody>
     </table>
   </div>
 
-  <script>
-    const form = document.getElementById('addForm');
-    const tableBody = document.querySelector('#corpTable tbody');
-    const loginContainer = document.getElementById('loginContainer');
-    const adminContainer = document.getElementById('adminContainer');
+  <div id="pw" class="tab-content hidden">
+    <h2>비밀번호 변경</h2>
+    <input type="password" id="oldPw" placeholder="기존 비밀번호" />
+    <input type="password" id="newPw" placeholder="새 비밀번호" />
+    <button class="action" onclick="changePw()">비밀번호 변경</button>
+  </div>
+</div>
 
-    function getStoredPassword() {
-      return localStorage.getItem('adminPassword') || '123456';
+<script>
+  const DEFAULT_PW = "123456";
+
+  function login() {
+    const input = document.getElementById("loginPw").value;
+    const saved = localStorage.getItem("adminPw") || DEFAULT_PW;
+    if (input === saved) {
+      document.getElementById("loginBox").classList.add("hidden");
+      document.getElementById("adminBox").classList.remove("hidden");
+      loadCorp();
+    } else {
+      alert("비밀번호가 틀렸습니다.");
     }
+  }
 
-    function checkPassword() {
-      const input = document.getElementById('passwordInput').value;
-      if (input === getStoredPassword()) {
-        loginContainer.style.display = 'none';
-        adminContainer.style.display = 'block';
-        renderTable();
-      } else {
-        alert('비밀번호가 틀렸습니다.');
-      }
-    }
+  function showTab(id) {
+    document.querySelectorAll(".tab-content").forEach(t => t.classList.add("hidden"));
+    document.getElementById(id).classList.remove("hidden");
+    if (id === 'list') loadCorp();
+  }
 
-    function changePassword() {
-      const oldPass = document.getElementById('oldPassword').value;
-      const newPass = document.getElementById('newPassword').value;
-      if (oldPass === getStoredPassword()) {
-        localStorage.setItem('adminPassword', newPass);
-        alert('비밀번호가 변경되었습니다.');
-        document.getElementById('oldPassword').value = '';
-        document.getElementById('newPassword').value = '';
-      } else {
-        alert('기존 비밀번호가 맞지 않습니다.');
-      }
-    }
+  function registerCorp() {
+    const corp = {
+      name: document.getElementById("name").value,
+      type: document.getElementById("type").value,
+      year: document.getElementById("year").value,
+      capital: document.getElementById("capital").value,
+      status: document.getElementById("status").value
+    };
+    let list = JSON.parse(localStorage.getItem("corps") || "[]");
+    list.push(corp);
+    localStorage.setItem("corps", JSON.stringify(list));
+    alert("등록되었습니다.");
+    document.querySelectorAll("#reg input").forEach(el => el.value = "");
+  }
 
-    function renderTable() {
-      tableBody.innerHTML = '';
-      const corpList = JSON.parse(localStorage.getItem('corps') || '[]');
-      corpList.forEach((corp, index) => {
-        const row = `<tr>
-          <td>${corp.name}</td>
-          <td>${corp.type}</td>
-          <td>${corp.year}</td>
-          <td>${corp.capital}</td>
-          <td>${corp.status}</td>
-          <td><button class="delete-btn" onclick="deleteCorp(${index})">삭제</button></td>
-        </tr>`;
-        tableBody.innerHTML += row;
-      });
-    }
-
-    function deleteCorp(index) {
-      const corpList = JSON.parse(localStorage.getItem('corps') || '[]');
-      corpList.splice(index, 1);
-      localStorage.setItem('corps', JSON.stringify(corpList));
-      renderTable();
-    }
-
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const newCorp = {
-        name: document.getElementById('corpName').value,
-        type: document.getElementById('businessType').value,
-        year: document.getElementById('established').value,
-        capital: document.getElementById('capital').value,
-        status: document.getElementById('status').value
-      };
-      const corpList = JSON.parse(localStorage.getItem('corps') || '[]');
-      corpList.push(newCorp);
-      localStorage.setItem('corps', JSON.stringify(corpList));
-      form.reset();
-      renderTable();
+  function loadCorp() {
+    const list = JSON.parse(localStorage.getItem("corps") || "[]");
+    const tbody = document.getElementById("corpList");
+    tbody.innerHTML = "";
+    list.forEach((c, i) => {
+      const row = `<tr>
+        <td>${c.name}</td><td>${c.type}</td><td>${c.year}</td><td>${c.capital}</td><td>${c.status}</td>
+        <td><button class="danger" onclick="delCorp(${i})">삭제</button></td>
+      </tr>`;
+      tbody.innerHTML += row;
     });
-  </script>
+  }
+
+  function delCorp(index) {
+    let list = JSON.parse(localStorage.getItem("corps") || "[]");
+    if (confirm("정말 삭제하시겠습니까?")) {
+      list.splice(index, 1);
+      localStorage.setItem("corps", JSON.stringify(list));
+      loadCorp();
+    }
+  }
+
+  function changePw() {
+    const oldPw = document.getElementById("oldPw").value;
+    const newPw = document.getElementById("newPw").value;
+    const saved = localStorage.getItem("adminPw") || DEFAULT_PW;
+    if (oldPw === saved) {
+      localStorage.setItem("adminPw", newPw);
+      alert("비밀번호가 변경되었습니다.");
+      document.getElementById("oldPw").value = "";
+      document.getElementById("newPw").value = "";
+    } else {
+      alert("기존 비밀번호가 틀렸습니다.");
+    }
+  }
+</script>
+
 </body>
 </html>
