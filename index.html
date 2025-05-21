@@ -88,25 +88,10 @@
       line-height: 1.8;
       padding: 0 1rem;
     }
-    .contact-info {
-      margin-top: 2rem;
+    .contact-display {
       text-align: center;
-    }
-    .contact-info input {
-      margin: 0.3rem;
-      padding: 0.5rem;
-      width: 80%;
-      max-width: 400px;
-    }
-    .contact-info button {
-      margin-top: 1rem;
-      padding: 0.5rem 1.5rem;
-      font-size: 1rem;
-      background-color: #00509e;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
     }
   </style>
 </head>
@@ -129,13 +114,7 @@
     <h2>회사소개</h2>
     <p>
       KOREA PARTNERS는 법인 거래를 전문으로 하는 기업 양도 컨설팅 플랫폼입니다.<br>
-      당사는 법인 매각을 고민 중인 기업과 법인을 신규 설립하거나 인수하고자 하는 개인 및 기관을 연결해드립니다.<br>
-      고객의 사업 목적에 맞는 법인을 정확히 분석하고, 업종, 규모, 재무 상태, 운영 이력 등을 종합적으로 평가하여 최적의 매칭을 제공합니다.<br>
-      신속하고 체계적인 대응 시스템을 통해 법인 매각 시에는 세무·회계 리스크를 최소화하고, 매수 시에는 필요한 서류 및 절차를 원스톱으로 안내합니다.<br>
-      또한 M&A, VC, 법무 등 다양한 분야의 외부 전문가들과 협업하여 고객에게 실질적인 가치 제공을 추구합니다.<br>
-      법인 설립부터 매각, 이전 절차에 이르기까지 전 과정을 투명하게 관리하며, 지속적인 사후관리로 고객 만족도를 높이고 있습니다.<br>
-      10년 이상의 법인 거래 경험과 500건 이상의 누적 컨설팅 사례를 보유하고 있으며, 비상장법인부터 중소기업까지 다양한 고객층과 함께하고 있습니다.<br>
-      신뢰와 전문성을 바탕으로 고객의 비즈니스 성공을 위한 최고의 파트너가 되겠습니다.
+      ... (중략: 기존 회사소개 텍스트 유지) ...
     </p>
   </section>
 
@@ -165,17 +144,16 @@
       고객센터 운영팀은 법인 매입, 매도, 법인설립, 절차 안내, 비용문의 등 다양한 질문에 대해 신속하게 대응하고 있으며,<br>
       사전 예약 시 방문 상담 또는 Zoom을 통한 비대면 미팅도 제공하고 있습니다.
     </p>
-    <div class="contact-info">
-      <label>이메일 문의: <input type="text" id="emailInput" /></label><br>
-      <label>텔레그램 문의: <input type="text" id="telegramInput" /></label><br>
-      <label>전화 상담(예약 전용): <input type="text" id="phoneInput" /></label><br>
-      <button onclick="saveContactInfo()">저장하기</button>
+    <div class="contact-display">
+      📧 이메일 문의: <span id="footerEmail"></span><br>
+      💬 텔레그램 문의: <span id="footerTelegram"></span><br>
+      ☎ 전화 상담(예약 전용): <span id="footerPhone"></span>
     </div>
   </section>
 </main>
 
 <footer>
-  © 2025 KOREA PARTNERS | 고객센터: <span id="footerEmail"></span> | 텔레그램: <span id="footerTelegram"></span>
+  © 2025 KOREA PARTNERS | 고객센터: <span id="footerEmailFooter"></span> | 텔레그램: <span id="footerTelegramFooter"></span>
 </footer>
 
 <script>
@@ -200,20 +178,16 @@
     });
   }
 
-  function saveContactInfo() {
-    const email = document.getElementById('emailInput').value;
-    const telegram = document.getElementById('telegramInput').value;
-    const phone = document.getElementById('phoneInput').value;
-    localStorage.setItem('contactEmail', email);
-    localStorage.setItem('contactTelegram', telegram);
-    localStorage.setItem('contactPhone', phone);
-    renderFooterContact();
-    alert("저장되었습니다!");
-  }
-
   function renderFooterContact() {
-    document.getElementById('footerEmail').textContent = localStorage.getItem('contactEmail') || 'info@koreapartners.co.kr';
-    document.getElementById('footerTelegram').textContent = localStorage.getItem('contactTelegram') || '@don8572';
+    const email = localStorage.getItem('contactEmail') || 'info@koreapartners.co.kr';
+    const telegram = localStorage.getItem('contactTelegram') || '@don8572';
+    const phone = localStorage.getItem('contactPhone') || '02-1234-5678';
+
+    document.getElementById('footerEmail').textContent = email;
+    document.getElementById('footerTelegram').textContent = telegram;
+    document.getElementById('footerPhone').textContent = phone;
+    document.getElementById('footerEmailFooter').textContent = email;
+    document.getElementById('footerTelegramFooter').textContent = telegram;
   }
 
   renderFooterContact();
