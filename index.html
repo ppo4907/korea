@@ -2,11 +2,175 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>KOREA PARTNERS - 메인</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KOREA PARTNERS - 법인 양도 리스트</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f7f9fc;
+      color: #333;
+    }
+    header {
+      background-color: #003366;
+      padding: 1.2rem;
+      color: white;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .logo img {
+      height: 40px;
+    }
+    .nav {
+      margin-top: 0.8rem;
+    }
+    .nav a {
+      color: white;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    .nav a:hover {
+      text-decoration: underline;
+    }
+    main {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border-radius: 6px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 1rem;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+    th {
+      background-color: #f0f0f0;
+    }
+    .footer {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #555;
+      padding: 1.5rem;
+      background-color: #f0f0f0;
+    }
+    .footer a {
+      color: #007acc;
+      text-decoration: none;
+    }
+    .admin-link {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.7rem 1.2rem;
+      background-color: #003366;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .admin-link:hover {
+      background-color: #00509e;
+    }
+    section {
+      margin-top: 3rem;
+    }
+    section h3 {
+      color: #003366;
+    }
+    section p {
+      line-height: 1.6;
+    }
+  </style>
 </head>
 <body>
-  <h1>법인 양도 리스트</h1>
-  <p>본 사이트는 KOREA PARTNERS에서 관리하는 법인 양도 리스트를 제공합니다.</p>
-  <p><a href="admin.html">[관리자 페이지]</a></p>
+  <header>
+    <div class="logo">
+      <img src="https://via.placeholder.com/200x40?text=KOREA+PARTNERS+LOGO" alt="KOREA PARTNERS 로고">
+    </div>
+    <div class="nav">
+      <a href="#corp-list">법인 목록</a>
+      <a href="#company">회사소개</a>
+      <a href="#contact">고객센터</a>
+      <a href="admin.html">관리자</a>
+    </div>
+  </header>
+
+  <main>
+    <section id="corp-list">
+      <h2>법인 양도 리스트</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>법인명</th>
+            <th>업종</th>
+            <th>설립연도</th>
+            <th>자본금</th>
+            <th>상태</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>㈜에이스솔루션</td>
+            <td>IT 서비스</td>
+            <td>2019</td>
+            <td>5천만원</td>
+            <td>정상</td>
+          </tr>
+          <tr>
+            <td>㈜블루텍</td>
+            <td>제조업</td>
+            <td>2017</td>
+            <td>1억원</td>
+            <td>정상</td>
+          </tr>
+          <tr>
+            <td>㈜제이엠파트너스</td>
+            <td>도소매업</td>
+            <td>2018</td>
+            <td>7천만원</td>
+            <td>정상</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="company">
+      <h3>회사소개</h3>
+      <p>
+        KOREA PARTNERS는 법인 거래를 전문으로 하는 기업 양도 컨설팅 플랫폼입니다.<br>
+        고객의 니즈에 맞춘 법인 연결 및 안전한 절차 안내를 통해, 신속하고 정확한 법인 매칭을 도와드립니다.<br>
+        10년 이상 법인 거래 경험을 바탕으로 다양한 업종과 규모의 법인을 검토하고 제공하고 있습니다.
+      </p>
+    </section>
+
+    <section id="contact">
+      <h3>고객센터</h3>
+      <p>
+        상담 및 문의는 아래 텔레그램 또는 이메일로 언제든지 가능합니다.<br>
+        📩 이메일: <a href="mailto:info@koreapartners.co.kr">info@koreapartners.co.kr</a><br>
+        💬 텔레그램: <a href="https://t.me/don8572" target="_blank">@don8572</a>
+      </p>
+    </section>
+
+    <div style="text-align: center;">
+      <a class="admin-link" href="admin.html">관리자 페이지 바로가기</a>
+    </div>
+  </main>
+
+  <div class="footer">
+    © 2025 KOREA PARTNERS | <br>
+    고객센터: <a href="mailto:info@koreapartners.co.kr">info@koreapartners.co.kr</a> | 텔레그램 <a href="https://t.me/don8572" target="_blank">@don8572</a>
+  </div>
 </body>
 </html>
